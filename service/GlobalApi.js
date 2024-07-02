@@ -11,6 +11,12 @@ const axiosClient = axios.create({
 
 const CreateNewResume = (data) => axiosClient.post("/user-resumes", data);
 
+const getUserResumes = (userEmail) =>
+  axiosClient.get("/user-resumes?filters[userEmail][$eq]=" + userEmail);
+
 export default {
   CreateNewResume,
+  getUserResumes,
 };
+
+// checkout Strapi documentation to filter the request/response: https://docs.strapi.io/dev-docs/api/rest/filters-locale-publication
