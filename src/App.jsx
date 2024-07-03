@@ -4,6 +4,7 @@ import "./App.css";
 import { Navigate, Outlet } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
 import Header from "./components/customComponent/Header";
+import { Toaster } from "./components/ui/sonner";
 
 function App() {
   const { user, isLoaded, isSignedIn } = useUser();
@@ -14,6 +15,7 @@ function App() {
     <>
       <Header />
       <Outlet />
+      <Toaster />
     </>
   );
 }
