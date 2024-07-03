@@ -5,10 +5,21 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import GlobalApi from "./../../../../../service/GlobalApi";
 import { Brain, Loader } from "lucide-react";
+import { AIChatSession } from "./../../../../../service/AIModal";
+import { toast } from "sonner";
+
+// const prompt = `Job Title: {jobTitle} , Depends on job title give me list of  summary for 3 experience level, Mid Level and Freasher level in 3 -4 lines in array format, With summery and experience_level Field in JSON Format. And use this JSON format for generating the output
+// {"experience_level": "Fresher", "summary": ""},
+// {"experience_level": "Mid-Level", "summary": ""},
+// {"experience_level": "Experienced", "summary": ""}`;
+
+const prompt =
+  "Job Title: {jobTitle} , Depends on job title give me list of  summary for 3 experience level, Mid Level and Freasher level in 3 -4 lines in array format, With summery and experience_level Field in JSON Format";
 
 const Summery = ({ enableNext }) => {
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
   const [summery, setSummery] = useState();
+  const [aiGeneratedSummeryList, setAiGeneratedSummeryList] = useState();
   const [loading, setLoading] = useState(false);
   const params = useParams();
 
@@ -19,6 +30,24 @@ const Summery = ({ enableNext }) => {
         summery: summery,
       });
   }, [summery]);
+
+  const GenerateSummeryFormAI = async () => {
+    try {
+      setLoading(true);
+      const PROMPT = prompt.replace("{jobTitle}", resumeInfo?.jobTitle);
+      console.log(PROMPT);
+      const result = await AIChatSession.sendMessage(PROMPT);
+      console.log(JSON.parse(result.response.text()));
+      setAiGeneratedSummeryList(JSON.parse(result.response.text()));
+      setLoading(false);
+    } catch (error) {
+      console.error("Error while generating summery from AI : ", error);
+      toast.error(
+        "Something went wrong while generating from AI. Please try again Later. "
+      );
+      setLoading(false);
+    }
+  };
 
   const onSave = (e) => {
     e.preventDefault();
@@ -55,9 +84,16 @@ const Summery = ({ enableNext }) => {
               variant="outline"
               size="sm"
               className="border-primary text-primary flex gap-2"
+              disabled={loading}
+              onClick={() => GenerateSummeryFormAI()}
             >
-              <Brain size={20} />
-              Generate From AI
+              {loading ? (
+                <Loader className="animate-spin" />
+              ) : (
+                <>
+                  <Brain size={20} /> Generate From AI
+                </>
+              )}
             </Button>
           </div>
           <Textarea
@@ -72,6 +108,23 @@ const Summery = ({ enableNext }) => {
           </div>
         </form>
       </div>
+
+      {aiGeneratedSummeryList && (
+        <div className=" border-[1.9px] border-primary rounded-xl mt-3 py-3 px-4 flex flex-col justify-center items-center">
+          <h2 className="font-bold text-lg">Suggestions</h2>
+          {aiGeneratedSummeryList.map((item, index) => (
+            <div key={index}>
+              <h2 className="font-bold my-1">
+                ⚡Level:{" "}
+                <span className="text-indigo-600">
+                  {item?.experience_level}
+                </span>
+              </h2>
+              <p className="text-justify">{item?.summary}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
