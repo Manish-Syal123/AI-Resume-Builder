@@ -1,22 +1,27 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CirclePlus } from "lucide-react";
+import { CirclePlus, Loader } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import RichTextEditor from "../RichTextEditor";
 import { ResumeInfoContext } from "@/contect/ResumeInfoContext";
+import { useParams } from "react-router-dom";
+import { toast } from "sonner";
+import GlobalApi from "./../../../../../service/GlobalApi";
 
+const formField = {
+  title: "",
+  companyName: "",
+  city: "",
+  state: "",
+  startDate: "",
+  endDate: "",
+  workSummery: "",
+};
 const Experience = () => {
-  const formField = {
-    title: "",
-    companyName: "",
-    city: "",
-    state: "",
-    startDate: "",
-    endDate: "",
-    workSummery: "",
-  };
   const [experienceList, setExperienceList] = useState([formField]);
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
+  const [loading, setLoading] = useState(false);
+  const params = useParams();
 
   const handleChange = (index, event) => {
     const newEntries = experienceList.slice();
@@ -45,6 +50,28 @@ const Experience = () => {
       experience: experienceList,
     });
   }, [experienceList]);
+
+  const onSave = async () => {
+    try {
+      setLoading(true);
+      const data = {
+        data: {
+          Experience: experienceList.map(({ id, ...rest }) => rest),
+        },
+      };
+      console.log(experienceList);
+
+      await GlobalApi.UpdateResumeDetail(params?.resumeId, data).then((res) => {
+        console.log(res);
+        setLoading(false);
+        toast("Details updated !");
+      });
+    } catch (error) {
+      console.error("Error while updating User Experience details: ", error);
+      toast("Something went wrong while updating your Experience Details.");
+      setLoading(false);
+    }
+  };
   return (
     <div>
       <div className="p-5 shadow-lg rounded-lg border-t-primary border-t-4 mt-10">
@@ -132,7 +159,11 @@ const Experience = () => {
             ) : null}
           </div>
 
-          {experienceList.length > 0 ? <Button>Save</Button> : null}
+          {experienceList.length > 0 ? (
+            <Button disabled={loading} onClick={() => onSave()}>
+              {loading ? <Loader className="animate-spin" /> : "Save"}
+            </Button>
+          ) : null}
         </div>
       </div>
     </div>
