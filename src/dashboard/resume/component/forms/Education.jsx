@@ -23,6 +23,10 @@ const Education = () => {
     },
   ]);
 
+  useEffect(() => {
+    resumeInfo && setEducationalList(resumeInfo?.education);
+  }, []);
+
   const handleChange = (event, index) => {
     const newEntries = educationalList.slice();
     const { name, value } = event.target;
@@ -78,6 +82,7 @@ const Education = () => {
       education: educationalList,
     });
   }, [educationalList]);
+
   return (
     <div className="p-5 shadow-lg rounded-lg border-t-primary border-t-4 mt-10">
       <h2 className="font-bold text-lg">Education</h2>
@@ -91,15 +96,24 @@ const Education = () => {
                 <Input
                   name="universityName"
                   onChange={(e) => handleChange(e, index)}
+                  defaultValue={item?.universityName}
                 />
               </div>
               <div>
                 <label>Degree</label>
-                <Input name="degree" onChange={(e) => handleChange(e, index)} />
+                <Input
+                  name="degree"
+                  onChange={(e) => handleChange(e, index)}
+                  defaultValue={item?.degree}
+                />
               </div>
               <div>
                 <label>Major</label>
-                <Input name="major" onChange={(e) => handleChange(e, index)} />
+                <Input
+                  name="major"
+                  onChange={(e) => handleChange(e, index)}
+                  defaultValue={item?.major}
+                />
               </div>
               <div>
                 <label>Start Date</label>
@@ -107,6 +121,7 @@ const Education = () => {
                   type="date"
                   name="startDate"
                   onChange={(e) => handleChange(e, index)}
+                  defaultValue={item?.startDate}
                 />
               </div>
               <div>
@@ -115,6 +130,7 @@ const Education = () => {
                   type="date"
                   name="endDate"
                   onChange={(e) => handleChange(e, index)}
+                  defaultValue={item?.endDate}
                 />
               </div>
               <div className="col-span-2">
@@ -122,6 +138,7 @@ const Education = () => {
                 <Textarea
                   name="description"
                   onChange={(e) => handleChange(e, index)}
+                  defaultValue={item?.description}
                 />
               </div>
             </div>

@@ -15,6 +15,10 @@ const Skills = () => {
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
   const { resumeId } = useParams();
 
+  useEffect(() => {
+    resumeInfo && setSkillsList(resumeInfo?.skills);
+  }, []);
+
   const handleChange = (index, name, value) => {
     const newEntries = skillsList.slice();
     newEntries[index][name] = value;
@@ -70,11 +74,15 @@ const Skills = () => {
 
       <div>
         {skillsList.map((item, index) => (
-          <div className="flex justify-between items-center border-2 rounded-lg p-3 mb-2">
+          <div
+            key={index}
+            className="flex justify-between items-center border-2 rounded-lg p-3 mb-2"
+          >
             <div className="w-[55%]">
               <label className="text-xs">Name</label>
               <Input
                 onChange={(e) => handleChange(index, "name", e.target.value)}
+                defaultValue={item.name}
               />
             </div>
 

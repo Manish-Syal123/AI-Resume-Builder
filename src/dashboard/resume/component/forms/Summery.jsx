@@ -38,6 +38,7 @@ const Summery = ({ enableNext }) => {
       console.log(PROMPT);
       const result = await AIChatSession.sendMessage(PROMPT);
       console.log(JSON.parse(result.response.text()));
+
       setAiGeneratedSummeryList(JSON.parse(result.response.text()));
       setLoading(false);
     } catch (error) {
@@ -98,6 +99,8 @@ const Summery = ({ enableNext }) => {
           </div>
           <Textarea
             required
+            value={summery}
+            defaultValue={summery ? summery : resumeInfo?.summery}
             onChange={(e) => setSummery(e.target.value)}
             className="mt-5"
           />
@@ -113,7 +116,11 @@ const Summery = ({ enableNext }) => {
         <div className=" border-[1.9px] border-primary rounded-xl mt-3 py-3 px-4 flex flex-col justify-center items-center">
           <h2 className="font-bold text-lg">Suggestions</h2>
           {aiGeneratedSummeryList.map((item, index) => (
-            <div key={index}>
+            <div
+              key={index}
+              onClick={() => setSummery(item?.summary)}
+              className="p-5 shadow-lg my-4 rounded-lg cursor-pointer"
+            >
               <h2 className="font-bold my-1">
                 ⚡Level:{" "}
                 <span className="text-indigo-600">
