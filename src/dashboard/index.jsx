@@ -9,11 +9,11 @@ const Dashboard = () => {
   const { user } = useUser();
 
   useEffect(() => {
-    user && getResumesList();
+    user && GetResumesList();
   }, [user]);
 
   // To get all the Resumes Created by Current loggedIn User
-  const getResumesList = async () => {
+  const GetResumesList = async () => {
     try {
       await GlobalApi.getUserResumes(
         user?.primaryEmailAddress?.emailAddress
@@ -33,7 +33,11 @@ const Dashboard = () => {
         <AddResume />
         {resumeList.length > 0
           ? resumeList.map((resume, index) => (
-              <ResumeCardItem key={index} resume={resume} />
+              <ResumeCardItem
+                key={index}
+                resume={resume}
+                refreshData={GetResumesList}
+              />
             ))
           : [1, 2, 3, 4].map((item, index) => (
               <div

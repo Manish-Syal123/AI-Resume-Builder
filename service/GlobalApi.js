@@ -20,11 +20,14 @@ const UpdateResumeDetail = (id, data) =>
 const GetResumeById = (id) =>
   axiosClient.get("/user-resumes/" + id + "?populate=*");
 
+const DeleteResumeById = (id) => axiosClient.delete("/user-resumes/" + id);
+
 export default {
   CreateNewResume,
   getUserResumes,
   UpdateResumeDetail,
   GetResumeById,
+  DeleteResumeById,
 };
 
 // checkout Strapi documentation to filter the request/response: https://docs.strapi.io/dev-docs/api/rest/filters-locale-publication
