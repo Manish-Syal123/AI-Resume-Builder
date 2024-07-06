@@ -26,7 +26,7 @@ const Experience = () => {
   useEffect(() => {
     resumeInfo?.Experience.length > 0 &&
       setExperienceList(resumeInfo?.Experience);
-  }, []);
+  }, [resumeInfo]);
 
   const handleChange = (index, event) => {
     const newEntries = experienceList.slice();

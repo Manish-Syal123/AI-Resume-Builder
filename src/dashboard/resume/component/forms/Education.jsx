@@ -57,7 +57,7 @@ const Education = () => {
       setLoading(true);
       const data = {
         data: {
-          education: educationalList,
+          education: educationalList.map(({ id, ...rest }) => rest),
         },
       };
 
