@@ -6,11 +6,12 @@ import Summery from "./forms/Summery";
 import Experience from "./forms/Experience";
 import Education from "./forms/Education";
 import Skills from "./forms/Skills";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 
 const FormSection = () => {
   const [activeFormIndex, setActiveFormIndex] = useState(1);
   const [enableNext, setEnablenext] = useState(false);
+  const { resumeId } = useParams();
   return (
     <div>
       <div className="flex justify-between items-center">
@@ -61,9 +62,9 @@ const FormSection = () => {
         <Education />
       ) : activeFormIndex == 5 ? (
         <Skills />
+      ) : activeFormIndex == 6 ? (
+        <Navigate to={"/my-resume/" + resumeId + "/view"} />
       ) : null}
-
-      {/* Skils */}
 
       {/*TODO: Social/coding profile Links */}
     </div>
