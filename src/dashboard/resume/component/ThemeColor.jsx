@@ -44,20 +44,20 @@ const ThemeColor = () => {
     setSelectedColor(color);
     setResumeInfo({ ...resumeInfo, themeColor: color });
 
-    // try {
-    //   const data = {
-    //     data: {
-    //       themeColor: color,
-    //     },
-    //   };
-    //   GlobalApi.UpdateResumeDetail(resumeId, data).then((resp) => {
-    //     console.log(resp);
-    //     toast.success("Theme Color Updated!");
-    //   });
-    // } catch (error) {
-    //   console.log("Error while Updating themeColor : ", error);
-    //   toast.error("Unable to update the theme color. Please try again!");
-    // }
+    try {
+      const data = {
+        data: {
+          themeColor: color,
+        },
+      };
+      GlobalApi.UpdateResumeDetail(resumeId, data).then((resp) => {
+        console.log(resp);
+        toast.success("Theme Color Updated!");
+      });
+    } catch (error) {
+      console.log("Error while Updating themeColor : ", error);
+      toast.error("Unable to update the theme color. Please try again!");
+    }
   };
   return (
     <Popover>
