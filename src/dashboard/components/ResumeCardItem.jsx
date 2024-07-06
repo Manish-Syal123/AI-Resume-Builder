@@ -67,8 +67,8 @@ const ResumeCardItem = ({ resume, refreshData }) => {
       <div
         className="border p-3 flex justify-between  text-white rounded-b-lg shadow-lg"
         style={{
-          // background: resume?.themeColor,
-          background: "red",
+          background: resume?.themeColor,
+          // background: "red",
         }}
       >
         <h2 className="text-center my-1 group-hover:scale-105">
