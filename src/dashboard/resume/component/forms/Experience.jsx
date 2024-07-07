@@ -24,7 +24,8 @@ const Experience = () => {
   const params = useParams();
 
   useEffect(() => {
-    resumeInfo?.Experience.length > 0 &&
+    console.log("resumeInfo.experience⚡ ", resumeInfo);
+    resumeInfo?.Experience?.length > 0 &&
       setExperienceList(resumeInfo?.Experience);
   }, [resumeInfo]);
 
@@ -64,7 +65,7 @@ const Experience = () => {
     // console.log(experienceList);
     setResumeInfo({
       ...resumeInfo,
-      experience: experienceList,
+      Experience: experienceList,
     });
   }, [experienceList]);
 
