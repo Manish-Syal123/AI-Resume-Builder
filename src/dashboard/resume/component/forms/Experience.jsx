@@ -158,6 +158,8 @@ const Experience = () => {
                     onRichTextEditorChange={(event) =>
                       handleRichTextEditor(event, "workSummery", index)
                     }
+                    userPrompt={""}
+                    summeryFor={"ExperienceSummery"}
                   />
                 </div>
               </div>

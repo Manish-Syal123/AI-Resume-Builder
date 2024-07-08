@@ -20,36 +20,108 @@ import {
 import { AIChatSession } from "./../../../../service/AIModal";
 import { toast } from "sonner";
 
-const PROMPT = `position titile: {positionTitle} , Depends on position title give me 5-7 bullet points for my experience in resume , give me result in HTML format. Use this format for generating the output ["","",""]`;
+const PROMPT = `position titile: {positionTitle} , Depends on position title give me 5-7 bullet points for my experience in resume , give me result in HTML format. Use this format for generating the output ["•text,•text","•text,•text","•text,•text"]`;
 
-const RichTextEditor = ({ onRichTextEditorChange, index, defaultValue }) => {
+const RichTextEditor = ({
+  onRichTextEditorChange,
+  index,
+  defaultValue,
+  userPrompt,
+  summeryFor,
+}) => {
   const [value, setValue] = useState(defaultValue);
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
   const [loading, setLoading] = useState(false);
 
+  // const GenerateProjectSummery = async () => {
+  //   try {
+  //     setLoading(true);
+  //     if (!resumeInfo.projects[index].title) {
+  //       toast("Please Add Position Title");
+  //       setLoading(false);
+  //       return;
+  //     }
+  //     if (!resumeInfo.projects[index].technologies) {
+  //       toast("Please Add Technologies");
+  //       setLoading(false);
+  //       return;
+  //     }
+
+  //     const result = await AIChatSession.sendMessage(userPrompt);
+  //     console.log("Project Summery 👉", result.response.text());
+  //     const resp = result.response.text();
+  //     setValue(resp.replace("[", "").replace("]", ""));
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.error("Error in generating summery: ", error);
+  //     toast(
+  //       "Something went wrong, while generating from AI. Please try again Later!!"
+  //     );
+  //     setLoading(false);
+  //   }
+  // };
+
   const GenerateSummeryFromAI = async () => {
-    try {
-      setLoading(true);
-      if (!resumeInfo.Experience[index].title) {
-        toast("Please Add Position Title");
+    if (summeryFor === "ExperienceSummery") {
+      try {
+        setLoading(true);
+        if (!resumeInfo.Experience[index].title) {
+          toast("Please Add Position Title");
+          setLoading(false);
+          return;
+        }
+        const prompt = PROMPT.replace(
+          "{positionTitle}",
+          resumeInfo.Experience[index].title
+        );
+        const result = await AIChatSession.sendMessage(prompt);
+        console.log(result.response.text());
+        const resp = result.response.text();
+        setValue(resp.replace("[", "").replace("]", ""));
         setLoading(false);
-        return;
+      } catch (error) {
+        console.error("Error in generating summery: ", error);
+        toast(
+          "Something went wrong, while generating from AI. Please try again Later!!"
+        );
+        setLoading(false);
       }
-      const prompt = PROMPT.replace(
-        "{positionTitle}",
-        resumeInfo.Experience[index].title
-      );
-      const result = await AIChatSession.sendMessage(prompt);
-      console.log(result.response.text());
-      const resp = result.response.text();
-      setValue(resp.replace("[", "").replace("]", ""));
-      setLoading(false);
-    } catch (error) {
-      console.log("Error in generating summery: ", error);
-      toast(
-        "Something went wrong, while generating from AI. Please try again Later!!"
-      );
-      setLoading(false);
+    } else {
+      try {
+        setLoading(true);
+        if (!resumeInfo.projects[index].title) {
+          toast("Please Add Position Title");
+          setLoading(false);
+          return;
+        }
+        if (!resumeInfo.projects[index].technologies) {
+          toast("Please Add Technologies");
+          setLoading(false);
+          return;
+        }
+
+        let prompt = userPrompt.replace(
+          "{projectTitle}",
+          resumeInfo.projects[index].title
+        );
+        prompt = userPrompt.replace(
+          "{Technologies}",
+          resumeInfo.projects[index].technologies
+        );
+
+        console.log("project-Prompt 🚀 ", prompt);
+        const result = await AIChatSession.sendMessage(prompt);
+        console.log("Project Summery 👉", result.response.text());
+        const resp = result.response.text();
+        setValue(resp.replace("[", "").replace("]", ""));
+        setLoading(false);
+      } catch (error) {
+        console.error("Error in generating summery: ", error);
+        toast(
+          "Something went wrong, while generating from AI. Please try again Later!!"
+        );
+        setLoading(false);
+      }
     }
   };
 

@@ -17,23 +17,35 @@ const ProjectsPreview = ({ resumeInfo }) => {
         }}
       />
 
-      <div className="my-5">
-        <h2
-          className="text-sm font-bold"
-          style={{
-            color: resumeInfo?.themeColor,
-          }}
-        >
-          Expense Tracker
-        </h2>
+      {resumeInfo?.projects?.map((item, index) => (
+        <div key={index} className="my-5">
+          <h2
+            className="text-sm font-bold"
+            style={{
+              color: resumeInfo?.themeColor,
+            }}
+          >
+            {item?.title}
+          </h2>
 
-        <h2 className="text-xs flex justify-end">Live Demo | Source Code</h2>
+          <h2 className="text-xs flex justify-end items-center text-center">
+            <div
+              className="text-xs my-2"
+              dangerouslySetInnerHTML={{ __html: item?.livedemo }}
+            />
+            👈👉
+            <div
+              className="text-xs my-2"
+              dangerouslySetInnerHTML={{ __html: item?.sourcecode }}
+            />
+          </h2>
 
-        <div
-          className="text-xs my-2"
-          dangerouslySetInnerHTML={{ __html: "project description..." }}
-        />
-      </div>
+          <div
+            className="text-xs my-2"
+            dangerouslySetInnerHTML={{ __html: item?.projectSummery }}
+          />
+        </div>
+      ))}
     </div>
   );
 };
