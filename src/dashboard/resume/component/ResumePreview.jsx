@@ -5,6 +5,7 @@ import SummeryPreview from "./preview/SummeryPreview";
 import ExperiencePreview from "./preview/ExperiencePreview";
 import EducationalPreview from "./preview/EducationalPreview";
 import SkillsPreview from "./preview/SkillsPreview";
+import ProjectsPreview from "./preview/ProjectsPreview";
 
 const ResumePreview = () => {
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
@@ -24,6 +25,8 @@ const ResumePreview = () => {
       <EducationalPreview resumeInfo={resumeInfo} />
       {/* Skils */}
       <SkillsPreview resumeInfo={resumeInfo} />
+      {/* Projects */}
+      <ProjectsPreview resumeInfo={resumeInfo} />
       {/*TODO: social/coding Links */}
     </div>
   );
