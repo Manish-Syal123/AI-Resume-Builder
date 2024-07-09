@@ -24,7 +24,7 @@ const Experience = () => {
   const params = useParams();
 
   useEffect(() => {
-    console.log("resumeInfo.experience⚡ ", resumeInfo);
+    // console.log("resumeInfo.experience⚡ ", resumeInfo);
     resumeInfo?.Experience?.length > 0 &&
       setExperienceList(resumeInfo?.Experience);
   }, [resumeInfo]);
@@ -78,16 +78,18 @@ const Experience = () => {
           // Experience: experienceList,
         },
       };
-      console.log(experienceList);
+      // console.log(experienceList);
 
       await GlobalApi.UpdateResumeDetail(params?.resumeId, data).then((res) => {
-        console.log(res);
+        // console.log(res);
         setLoading(false);
-        toast("Details updated !");
+        toast.success("Details updated !");
       });
     } catch (error) {
       console.error("Error while updating User Experience details: ", error);
-      toast("Something went wrong while updating your Experience Details.");
+      toast.error(
+        "Something went wrong while updating your Experience Details."
+      );
       setLoading(false);
     }
   };

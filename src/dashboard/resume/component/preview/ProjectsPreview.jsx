@@ -33,7 +33,10 @@ const ProjectsPreview = ({ resumeInfo }) => {
               className="text-xs my-2"
               dangerouslySetInnerHTML={{ __html: item?.livedemo }}
             />
-            👈👉
+            <pre>
+              {" "}
+              <b>&#124;</b>{" "}
+            </pre>
             <div
               className="text-xs my-2"
               dangerouslySetInnerHTML={{ __html: item?.sourcecode }}

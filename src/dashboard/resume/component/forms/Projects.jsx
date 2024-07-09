@@ -6,6 +6,18 @@ import { Loader } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import RichTextEditor from "../RichTextEditor";
+import {
+  BtnLink,
+  BtnBold,
+  BtnItalic,
+  BtnUndo,
+  BtnRedo,
+  EditorProvider,
+  Editor,
+  Toolbar,
+} from "react-simple-wysiwyg";
+import GlobalApi from "./../../../../../service/GlobalApi";
+import { toast } from "sonner";
 
 const PROMPT = `project titile: {projectTitle}, technologies used: {Technologies} , Depends on project title and technologies used in project, give me 5-7 bullet points for my project in resume.Use this format for generating the output ["•text,•text","•text,•text","•text,•text"]. And whenever you regenerate the output make sure to only generate based on the given projectTitle and technologies, don't explicitly change the projectTitle on your own `;
 const Projects = () => {
@@ -14,7 +26,11 @@ const Projects = () => {
   const [loading, setLoading] = useState(false);
   const params = useParams();
 
-  // TODO: to make changes in ProjectPreview as it has hardcode data.
+  useEffect(() => {
+    // console.log("resumeInfo.projects 🎉 ", resumeInfo);
+    resumeInfo?.projects?.length > 0 && setProjectList(resumeInfo?.projects);
+  }, [resumeInfo]);
+
   const handleChange = (index, event) => {
     const newEntries = projectList.slice();
     const { name, value } = event.target;
@@ -53,7 +69,29 @@ const Projects = () => {
     });
   }, [projectList]);
 
-  const onSave = () => {};
+  const onSave = async () => {
+    try {
+      setLoading(true);
+      const data = {
+        data: {
+          projects: projectList.map(({ id, ...rest }) => rest),
+          // Experience: experienceList,
+        },
+      };
+      console.log(projectList);
+
+      await GlobalApi.UpdateResumeDetail(params?.resumeId, data).then((res) => {
+        // console.log(res);
+        setLoading(false);
+        toast("Details updated !");
+      });
+    } catch (error) {
+      console.error("Error while updating User Project details: ", error);
+      toast("Something went wrong while updating your Project Details.");
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       <div className="p-5 shadow-lg rounded-lg border-t-primary border-t-4 mt-10">
@@ -83,19 +121,51 @@ const Projects = () => {
                 </div>
                 <div>
                   <label className="text-xs">Live Demo</label>
-                  <Textarea
+                  {/* <Textarea
                     name="livedemo"
                     onChange={(event) => handleChange(index, event)}
                     defaultValue={item?.livedemo}
-                  />
+                  /> */}
+                  {/* Markdown Options */}
+                  <EditorProvider>
+                    <Editor
+                      name="livedemo"
+                      onChange={(event) => handleChange(index, event)}
+                      value={item?.livedemo}
+                    >
+                      <Toolbar>
+                        <BtnBold />
+                        <BtnItalic />
+                        <BtnLink />
+                        <BtnUndo />
+                        <BtnRedo />
+                      </Toolbar>
+                    </Editor>
+                  </EditorProvider>
                 </div>
                 <div>
                   <label className="text-xs">Source Code</label>
-                  <Textarea
+                  {/* <Textarea
                     name="sourcecode"
                     onChange={(event) => handleChange(index, event)}
                     defaultValue={item?.sourcecode}
-                  />
+                  /> */}
+                  {/* Markdown Options */}
+                  <EditorProvider>
+                    <Editor
+                      name="sourcecode"
+                      onChange={(event) => handleChange(index, event)}
+                      value={item?.sourcecode}
+                    >
+                      <Toolbar>
+                        <BtnBold />
+                        <BtnItalic />
+                        <BtnLink />
+                        <BtnUndo />
+                        <BtnRedo />
+                      </Toolbar>
+                    </Editor>
+                  </EditorProvider>
                 </div>
                 <div className="col-span-2">
                   {/* Project Summery */}
@@ -125,7 +195,7 @@ const Projects = () => {
               variant="outline"
               className="text-primary text-wrap"
             >
-              + Add More Experience
+              + Add More Projects
             </Button>
             {projectList.length > 0 ? (
               <Button

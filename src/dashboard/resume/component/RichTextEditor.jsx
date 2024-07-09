@@ -33,34 +33,6 @@ const RichTextEditor = ({
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
   const [loading, setLoading] = useState(false);
 
-  // const GenerateProjectSummery = async () => {
-  //   try {
-  //     setLoading(true);
-  //     if (!resumeInfo.projects[index].title) {
-  //       toast("Please Add Position Title");
-  //       setLoading(false);
-  //       return;
-  //     }
-  //     if (!resumeInfo.projects[index].technologies) {
-  //       toast("Please Add Technologies");
-  //       setLoading(false);
-  //       return;
-  //     }
-
-  //     const result = await AIChatSession.sendMessage(userPrompt);
-  //     console.log("Project Summery 👉", result.response.text());
-  //     const resp = result.response.text();
-  //     setValue(resp.replace("[", "").replace("]", ""));
-  //     setLoading(false);
-  //   } catch (error) {
-  //     console.error("Error in generating summery: ", error);
-  //     toast(
-  //       "Something went wrong, while generating from AI. Please try again Later!!"
-  //     );
-  //     setLoading(false);
-  //   }
-  // };
-
   const GenerateSummeryFromAI = async () => {
     if (summeryFor === "ExperienceSummery") {
       try {
