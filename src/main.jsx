@@ -9,6 +9,7 @@ import Dashboard from "./dashboard/index.jsx";
 import { ClerkProvider } from "@clerk/clerk-react";
 import EditResume from "./dashboard/resume/[resumeId]/edit/index.jsx";
 import ViewResume from "./my-resume/[resumeId]/view/index.jsx";
+import NotFoundPage from "./NotFoundPage.jsx";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
         path: "/dashboard/resume/:resumeId/edit",
         element: <EditResume />,
       },
+      {
+        path: "*", // 404 page // catch all routs
+        element: <NotFoundPage />,
+      },
     ],
   },
   {
@@ -37,6 +42,10 @@ const router = createBrowserRouter([
   {
     path: "/my-resume/:resumeId/view",
     element: <ViewResume />,
+  },
+  {
+    path: "*", // Catch-all route for undefined paths
+    element: <NotFoundPage />,
   },
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
